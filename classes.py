@@ -1,7 +1,6 @@
 # Модуль с основными классами книжного магазина
 
 from datetime import datetime
-from typing import Dict
 from exceptions import *
 
 class Book:
