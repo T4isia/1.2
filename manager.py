@@ -275,3 +275,101 @@ class BookstoreManager:
 
         except Exception as e:
             print(f"Ошибка: {e}")
+
+    def _add_employee_interactive(self):
+        """Интерактивное добавление сотрудника"""
+        try:
+            print("\nДобавление сотрудника:")
+            name = input("Имя: ").strip()
+            if not name:
+                print("Ошибка: имя не может быть пустым")
+                return
+
+            position = input("Должность: ").strip()
+            if not position:
+                print("Ошибка: должность не может быть пустой")
+                return
+
+            salary = self._get_float_input("Зарплата: ")
+
+            # Создаем сотрудника с ID = 0 (система сама назначит следующий доступный ID)
+            employee = Employee(0, name, position, salary)
+            self.safe_execute(self.bookstore.add_employee, employee)
+
+        except Exception as e:
+            print(f"Ошибка: {e}")
+
+    def _add_customer_interactive(self):
+        """Интерактивное добавление клиента"""
+        try:
+            print("\nДобавление клиента:")
+            name = input("Имя: ").strip()
+            if not name:
+                print("Ошибка: имя не может быть пустым")
+                return
+
+            email = input("Email: ").strip()
+            if not email or '@' not in email:
+                print("Ошибка: введите корректный email")
+                return
+
+            phone = input("Телефон: ").strip()
+            if not phone:
+                print("Ошибка: телефон не может быть пустым")
+                return
+
+            # Создаем клиента с ID = 0 (система сама назначит следующий доступный ID)
+            customer = Customer(0, name, email, phone)
+            self.safe_execute(self.bookstore.add_customer, customer)
+
+        except Exception as e:
+            print(f"Ошибка: {e}")
+
+    def _save_data_interactive(self):
+        """Интерактивное сохранение данных"""
+        print("\nСохранение данных:")
+        print("1. Сохранить в JSON")
+        print("2. Сохранить в XML")
+
+        choice = input("Выберите формат: ").strip()
+        filename = input("Имя файла: ").strip()
+
+        if not filename:
+            print("Имя файла не может быть пустым")
+            return
+
+        if choice == '1':
+            if not filename.endswith('.json'):
+                filename += '.json'
+            self.safe_execute(self.bookstore.save_to_json, filename)
+
+        elif choice == '2':
+            if not filename.endswith('.xml'):
+                filename += '.xml'
+            self.safe_execute(self.bookstore.save_to_xml, filename)
+        else:
+            print("Неверный выбор формата")
+
+    def _load_data_interactive(self):
+        """Интерактивная загрузка данных"""
+        print("\nЗагрузка данных:")
+        print("1. Загрузить из JSON")
+        print("2. Загрузить из XML")
+
+        choice = input("Выберите формат: ").strip()
+        filename = input("Имя файла: ").strip()
+
+        if not filename:
+            print("Имя файла не может быть пустым")
+            return
+
+        if choice == '1':
+            if not filename.endswith('.json'):
+                filename += '.json'
+            self.safe_execute(self.bookstore.load_from_json, filename)
+        elif choice == '2':
+            if not filename.endswith('.xml'):
+                filename += '.xml'
+            self.safe_execute(self.bookstore.load_from_xml, filename)
+        else:
+            print("Неверный выбор формата")
